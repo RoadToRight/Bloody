@@ -49,8 +49,29 @@ export const getProduct = catchAsyncErrors(async (req, res, next) => {
 
 })
 export const updateProduct = catchAsyncErrors(async (req, res, next) => {
+    const { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle } = req.body;
 
+    const { handle: slug } = req.params;
+    if (!slug) {
+        return next(new ErrorHandler("Product Not Found", 400))
+    }
+    const updatedProduct = await ProductModel.findOneAndUpdate({ handle: slug }, { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle }, {
+
+    });
+    if (updatedProduct) {
+
+    }
 })
 export const deleteProduct = catchAsyncErrors(async (req, res, next) => {
+    const { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle } = req.body;
+    const { handle: slug } = req.params;
+    if (!slug) {
+        return next(new ErrorHandler("Product Not Found", 400))
+    }
+    const deletedProduct = await ProductModel.findOneAndDelete({ handle: slug }, { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle }, {
 
+    });
+    if (deletedProduct) {
+
+    }
 })

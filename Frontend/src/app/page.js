@@ -4,6 +4,7 @@ import AnnouncementBar from "@/components/sections/AnnouncementBar";
 import Navbar from "@/components/sections/Navbar";
 import Hero from "@/components/sections/Hero";
 import Footer from "@/components/sections/Footer";
+import ProductCard from "@/components/ProductCard";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <AnnouncementBar />
       <Navbar />
       <Hero />
+      <ProductCard />
       <Footer />
     </Providers>
   );
