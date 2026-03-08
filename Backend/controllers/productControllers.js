@@ -47,19 +47,54 @@ export const createProduct = catchAsyncErrors(async (req, res, next) => {
 })
 export const getProduct = catchAsyncErrors(async (req, res, next) => {
 
+    const { handle } = req.params;
+
+    if (handle) {
+        const product = await ProductModel.findOne({ handle });
+        if (product) {
+            res.status(200).json({
+                success: true,
+                message: "Prodyct Get Successfully",
+                product
+            })
+        }
+    }
+
 })
 export const updateProduct = catchAsyncErrors(async (req, res, next) => {
-    const { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle } = req.body;
+    const { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle, deleteImages } = req.body;
 
     const { handle: slug } = req.params;
+    let uploadedImages;
+    if (deleteImages && deleteImages.length !== 0) {
+        Promise.all(
+            deleteImages.map(async (public_id) => {
+                await cloudinary.uploader.destroy(public_id)
+            })
+        )
+
+    }
     if (!slug) {
         return next(new ErrorHandler("Product Not Found", 400))
     }
-    const updatedProduct = await ProductModel.findOneAndUpdate({ handle: slug }, { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle }, {
+    const images = req.files && Array.isArray(req.files.images) ? req.files.images : [req.files.images];
+    if (req.files && req.files.images && images.length !== 0) {
+        uploadedImages = Promise.all(
+            images.map(async (img) => {
+                const rawuploadedImages = await cloudinary.uploader.upload(img.tempFilePath, { folder: "Bloody/products" })
+                return { url: rawuploadedImages.url, public_id: rawuploadedImages.public_id }
+            })
+        )
+    }
+    const updatedProduct = await ProductModel.findOneAndUpdate({ handle: slug }, { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle, uploadedImages }, {
 
     });
     if (updatedProduct) {
-
+        res.status(200).json({
+            success: true,
+            updatedProduct,
+            message: ""
+        })
     }
 })
 export const deleteProduct = catchAsyncErrors(async (req, res, next) => {
