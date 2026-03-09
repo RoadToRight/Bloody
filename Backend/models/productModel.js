@@ -47,7 +47,7 @@ const ProductSchema = new mongoose.Schema({
     properties: {
         type: Map,
         of: String,
-        default: {}
+        default:{}
     },
     software: {
         type: String,

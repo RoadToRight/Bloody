@@ -11,12 +11,12 @@ export const getCollectionProducts = catchAsyncErrors(async (req, res, next) => 
         match.rating = rating;
     }
     if (price) {
-        match.price = { $gte: price.min, $lte: price.max }
+        const priceArr = price.split(",");
+        match.price = { $gte: priceArr[0], $lte: priceArr[1] }
     }
-
     if (properties) {
-
-        match.properties = properties
+        const propertiesArr = properties.split(",")
+        match.properties = properties;
     }
     ProductModel.aggregate([
         {

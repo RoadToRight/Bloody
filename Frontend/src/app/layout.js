@@ -1,5 +1,9 @@
 import { Urbanist } from "next/font/google";
 import "./globals.css";
+import Providers from "@/components/ThemeProvider";
+import AnnouncementBar from "@/components/sections/AnnouncementBar";
+import Navbar from "@/components/sections/Navbar";
+import Footer from "@/components/sections/Footer";
 
 
 const UrbanistFont = Urbanist({
@@ -16,7 +20,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${UrbanistFont.className}`}>
-        {children}
+        <Providers>
+          <AnnouncementBar />
+          <Navbar />
+          {children}
+          <Footer />
+
+        </Providers>
+
       </body>
     </html>
   );
