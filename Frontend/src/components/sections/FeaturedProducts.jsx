@@ -13,7 +13,8 @@ const FeaturedProducts = () => {
             <Typography variant='h3'>Featured Products</Typography>
             <Swiper spaceBetween={20}  className="products_wrapper" modules={[Pagination]} pagination={{ clickable: true }}
             breakpoints={{
-                767:{slidesPerView:2},
+                600:{slidesPerView:2},
+                767:{slidesPerView:3},
                 1024:{slidesPerView:3},
                 1300:{slidesPerView:4}
             }}

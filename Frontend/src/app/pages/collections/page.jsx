@@ -91,7 +91,7 @@ const Collections = () => {
                         <Typography sx={{ fontSize: 14 }}>SORT BY</Typography>
 
                         <Select
-                            defaultValue="higjh"
+                            defaultValue="high"
                             size="small"
                             sx={{
                                 bgcolor: "#111",
