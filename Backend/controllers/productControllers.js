@@ -62,18 +62,12 @@ export const getProduct = catchAsyncErrors(async (req, res, next) => {
 
 })
 export const updateProduct = catchAsyncErrors(async (req, res, next) => {
-    const { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle, deleteImages } = req.body;
+    const { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle } = req.body;
+    const updatedFields = Object.fromEntries(Object.entries(req.body || {}).filter(([_, v]) => v !== undefined))
 
     const { handle: slug } = req.params;
     let uploadedImages;
-    if (deleteImages && deleteImages.length !== 0) {
-        Promise.all(
-            deleteImages.map(async (public_id) => {
-                await cloudinary.uploader.destroy(public_id)
-            })
-        )
 
-    }
     if (!slug) {
         return next(new ErrorHandler("Product Not Found", 400))
     }
@@ -85,17 +79,22 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
                 return { url: rawuploadedImages.url, public_id: rawuploadedImages.public_id }
             })
         )
+        
+
     }
     const updatedProduct = await ProductModel.findOneAndUpdate({ handle: slug }, { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle, uploadedImages }, {
-
+        new: true,
+        runValidators: true
     });
-    if (updatedProduct) {
-        res.status(200).json({
-            success: true,
-            updatedProduct,
-            message: ""
-        })
+    if (!updatedProduct) {
+        next(new ErrorHandler("Product Not Found", 404))
     }
+
+    res.status(200).json({
+        success: true,
+        updatedProduct,
+        message: "Product Updated Successfully"
+    })
 })
 export const deleteProduct = catchAsyncErrors(async (req, res, next) => {
     const { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle } = req.body;
