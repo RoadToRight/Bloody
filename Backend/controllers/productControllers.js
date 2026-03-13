@@ -55,7 +55,7 @@ export const getProduct = catchAsyncErrors(async (req, res, next) => {
         if (product) {
             res.status(200).json({
                 success: true,
-                message: "Prodyct Get Successfully",
+                message: "Product Get Successfully",
                 product
             })
         }
@@ -64,15 +64,23 @@ export const getProduct = catchAsyncErrors(async (req, res, next) => {
 })
 export const updateProduct = catchAsyncErrors(async (req, res, next) => {
 
-    const updatedFields = Object.fromEntries(Object.entries(req.body || {}).filter(([_, v]) => v !== undefined))
+    const updatedFields = Object.fromEntries(Object.entries(req.body || {}).filter(([_, v]) => v !== undefined));
 
     const { handle: slug } = req.params;
     let uploadedImages;
+    let deletedImagesStatus;
 
     if (!slug) {
         return next(new ErrorHandler("Product Not Found", 400))
     }
     const images = req.files && Array.isArray(req.files.images) ? req.files.images : [req.files.images];
+    if (req.files && req.files.deleteImages) {
+        deletedImagesStatus = Promise.all(req.files.deleteImages.map(async (img) => {
+            const deletedStatus = await cloudinary.uploader.destroy(img.public_id);
+            return deletedStatus;
+        })
+        )
+    }
     if (req.files && req.files.images && images.length !== 0) {
         uploadedImages = Promise.all(
             images.map(async (img) => {
@@ -105,24 +113,23 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
     })
 })
 export const deleteController = catchAsyncErrors(async (req, res, next) => {
-    
-    const {handle} = req.params;
 
-    if(!handle){
+    const { handle } = req.params;
+
+    if (!handle) {
         next(new ErrorHandler("Please Provide Product Unique Identifier"))
     }
 
     const session = await mongoose.startSession();
     session.startTransaction();
 
-    try {
-        const product = await ProductModel.findOneAndDelete({handle},{session});
-        if(product){
-            
-        }
-    } catch (error) {
-        
+
+    const deletedProduct = ProductModel.findOneAndDelete({ handle }, { new: true, runValidators: true });
+    if (!deletedProduct) {
+        next(new ErrorHandler("Product Not Find", 400))
     }
-
-
+    res.status(200).json({
+        success: true,
+        message: "Product Deleted Successfully!"
+    })
 })
