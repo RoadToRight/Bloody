@@ -5,15 +5,22 @@ import { FaMinus } from 'react-icons/fa6'
 
 const FilterBox = ({ FiltersData }) => {
 
-    const [activeAccordian, setactiveAccordian] = useState(FiltersData)
+    const [activeAccordian, setactiveAccordian] = useState(Object.fromEntries(FiltersData.map((x, index) => ({ [index]: true }))));
+
 
     const handleAccordian = (index) => {
         setactiveAccordian((prev) => ({
             ...prev, [index]: !prev[index]
         }))
     }
+    useEffect(() => {
 
-    
+        console.log(activeAccordian);
+
+
+    }, [activeAccordian])
+
+
 
     return (
         <Grid size={{ xs: 12, md: 3 }}>
