@@ -75,14 +75,14 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
     }
     const images = req.files && Array.isArray(req.files.images) ? req.files.images : [req.files.images];
     if (req.files && req.files.deleteImages) {
-        deletedImagesStatus = Promise.all(req.files.deleteImages.map(async (img) => {
+        deletedImagesStatus = await Promise.all(req.files.deleteImages.map(async (img) => {
             const deletedStatus = await cloudinary.uploader.destroy(img.public_id);
             return deletedStatus;
         })
         )
     }
     if (req.files && req.files.images && images.length !== 0) {
-        uploadedImages = Promise.all(
+        uploadedImages = await Promise.all(
             images.map(async (img) => {
                 const rawuploadedImages = await cloudinary.uploader.upload(img.tempFilePath, { folder: "Bloody/products" })
                 return { url: rawuploadedImages.url, public_id: rawuploadedImages.public_id }
