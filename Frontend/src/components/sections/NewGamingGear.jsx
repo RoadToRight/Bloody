@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import ProductCard from '../ProductCard'
-import { Box, Chip, Typography } from '@mui/material'
+import { Box, Chip, Divider, Typography } from '@mui/material'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper/modules'
 import 'swiper/css'
@@ -11,10 +11,12 @@ const NewGamingGear = () => {
     return (
         <Box sx={{ padding: "0px 20px" }}>
             <Typography variant='h3'>New Gaming Gear</Typography>
-            <Box sx={{display:"flex"}} className="collections_tab" >
-                <Box sx={{padding:"6px 15px"}}><Box sx={{borderRight:"1px solid red",borderRadius:"0px"}}>Mouse</Box></Box>
-                <Box sx={{padding:"6px 15px"}}><Box sx={{borderRight:"1px solid red",borderRadius:"0px"}}>Keyboard</Box></Box>
-                <Box sx={{padding:"6px 15px"}}><Box sx={{borderRight:"1px solid red",borderRadius:"0px"}}>Headphone</Box></Box>
+            <Box sx={{ display: "flex" }} className="collections_tab" >
+                <Box sx={{ padding: "6px 15px" }}><Box sx={{ borderRadius: "0px", paddingRight: "10px" }}>Mouse</Box></Box>
+                <Divider orientation="vertical" flexItem sx={{ mx: 2, background: "Red" }} />
+                <Box sx={{ padding: "6px 15px" }}><Box sx={{ borderRadius: "0px", paddingRight: "10px" }}>Keyboard</Box></Box>
+                <Divider orientation="vertical" flexItem sx={{ mx: 2, background: "Red" }} />
+                <Box sx={{ padding: "6px 15px" }}><Box sx={{ borderRadius: "0px", paddingRight: "10px" }}>Headphone</Box></Box>
             </Box>
             <Swiper spaceBetween={20} className="products_wrapper" modules={[Pagination]} pagination={{ clickable: true }}
                 breakpoints={{

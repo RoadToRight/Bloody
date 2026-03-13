@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/errorMiddleware.js";
 import ProductModel from "../models/productModel.js";
@@ -62,7 +63,7 @@ export const getProduct = catchAsyncErrors(async (req, res, next) => {
 
 })
 export const updateProduct = catchAsyncErrors(async (req, res, next) => {
-    const { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle } = req.body;
+
     const updatedFields = Object.fromEntries(Object.entries(req.body || {}).filter(([_, v]) => v !== undefined))
 
     const { handle: slug } = req.params;
@@ -79,10 +80,17 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
                 return { url: rawuploadedImages.url, public_id: rawuploadedImages.public_id }
             })
         )
-        
+
 
     }
-    const updatedProduct = await ProductModel.findOneAndUpdate({ handle: slug }, { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle, uploadedImages }, {
+    const updatedProduct = await ProductModel.findOneAndUpdate({ handle: slug }, {
+        $set: updatedFields,
+        $push: {
+            images: {
+                $each: uploadedImages
+            }
+        }
+    }, {
         new: true,
         runValidators: true
     });
@@ -96,16 +104,25 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
         message: "Product Updated Successfully"
     })
 })
-export const deleteProduct = catchAsyncErrors(async (req, res, next) => {
-    const { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle } = req.body;
-    const { handle: slug } = req.params;
-    if (!slug) {
-        return next(new ErrorHandler("Product Not Found", 400))
-    }
-    const deletedProduct = await ProductModel.findOneAndDelete({ handle: slug }, { name, price, variants, rating, productDetails, specifications, socialLinks, tags, properties, software, handle }, {
+export const deleteController = catchAsyncErrors(async (req, res, next) => {
+    
+    const {handle} = req.params;
 
-    });
-    if (deletedProduct) {
-
+    if(!handle){
+        next(new ErrorHandler("Please Provide Product Unique Identifier"))
     }
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        const product = await ProductModel.findOneAndDelete({handle},{session});
+        if(product){
+            
+        }
+    } catch (error) {
+        
+    }
+
+
 })
