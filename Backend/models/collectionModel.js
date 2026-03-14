@@ -11,6 +11,7 @@ const collectionSchema = new mongoose.Schema({
         trim: true,
         unique: true,
         required: true,
+        index:true
     }
 }, { timestamps: true })
 
