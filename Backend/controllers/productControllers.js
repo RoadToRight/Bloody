@@ -80,6 +80,10 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
             return deletedStatus;
         })
         )
+
+        if (deletedImagesStatus) {
+            // ProductModel.findOneAndDelete({handle},)
+        }
     }
     if (req.files && req.files.images && images.length !== 0) {
         uploadedImages = await Promise.all(
