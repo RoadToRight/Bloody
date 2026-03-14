@@ -4,14 +4,10 @@ import {
     Box,
     Grid,
     Typography,
-    Checkbox,
-    FormControlLabel,
-    Divider,
     Select,
     MenuItem,
 } from "@mui/material";
 import ProductCard from "@/components/ProductCard";
-import { FaMinus } from "react-icons/fa6";
 import FilterBox from "@/components/client/FilterBox";
 const Collections = () => {
 
@@ -51,30 +47,7 @@ const Collections = () => {
             <Grid container spacing={4} sx={{ display: "flex" }}>
                 {/* LEFT FILTER SECTION */}
 
-                {/* <Grid size={{ xs: 12, md: 3 }}>
-                    {FiltersData.map((filter, index) => (
-                        <Box key={index} sx={{ mb: 4 }}>
-                            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "4px" }} onClick={(e) => handleAccordian(e)}>
-                                <Typography sx={{ fontWeight: 700 }}>
-                                    {filter.title}
-                                </Typography>
-                                <FaMinus />
-
-                            </Box>
-
-                            {filter.options.map((option, i) => (
-                                <FormControlLabel
-                                    key={i}
-                                    control={<Checkbox sx={{ color: "#fff" }} />}
-                                    label={option}
-                                />
-                            ))}
-
-                            <Divider sx={{ borderColor: "red", mt: 2 }} />
-                        </Box>
-                    ))}
-                </Grid> */}
-                <FilterBox FiltersData={FiltersData}/>
+                <FilterBox FiltersData={FiltersData} />
 
                 {/* RIGHT PRODUCTS SECTION */}
                 <Grid size={{ xs: 12, md: 9 }}>

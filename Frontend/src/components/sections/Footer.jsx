@@ -58,11 +58,7 @@ const Footer = () => {
                 <Typography variant="caption">© 2026 Bloody Gaming. All Rights Reserved. Powered By Tech Andaz</Typography>
             </Box>
 
-            <Badge badgeContent={1} color="error" sx={{ position: 'fixed', right: 24, bottom: 24 }}>
-                <Box sx={{ bgcolor: '#fff', color: '#000', borderRadius: '50%', width: 56, height: 56, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <FaRegCommentDots />
-                </Box>
-            </Badge>
+
         </Box>
     )
 }
