@@ -1,10 +1,18 @@
 import express from "express";
-import { createProduct, deleteController, getProduct, updateProduct } from "../controllers/productControllers.js";
+import { createProductController, deleteProductController, getProductController, updateProductController } from "../controllers/productControllers.js";
+import { validateProduct } from "../middlewares/validateRequest.js";
 
 const router = express.Router();
-router.get("/:handle", getProduct);
-// router.post("/create", createProduct);
-// router.patch("/update/:handle", updateProduct);
-// router.delete("/delete/:handle", deleteController)
+// CREATE PRODUCT
+router.post("/create", validateProduct, createProductController);
+
+// GET PRODUCT BY HANDLE
+router.get("/:handle", getProductController);
+
+// UPDATE PRODUCT
+router.put("/:handle", validateProduct, updateProductController);
+
+// DELETE PRODUCT
+router.delete("/:handle", deleteProductController);
 
 export default router;
