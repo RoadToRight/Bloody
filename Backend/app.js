@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import { dbConnection } from "./database/dbConnection.js";
 import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 import productRoutes from "./routes/productRoutes.js"
+import collectionRoutes from "./routes/collectionRoutes.js"
 import multer from "multer";
 
 // Intializations
@@ -26,7 +27,8 @@ app.use(express.urlencoded({ extended: true }))
 // ---------------------------------------------------
 
 // Routes
-app.use("/products", productRoutes)
+app.use("/products", productRoutes);
+app.use("/collections", collectionRoutes);
 // ---------------------------------------------------
 
 

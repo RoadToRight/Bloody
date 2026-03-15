@@ -44,11 +44,17 @@ const ProductSchema = new mongoose.Schema({
         type: [String],
         default: []
     },
-    properties: {
-        type: Map,
-        of: String,
-        default:{}
-    },
+    properties: [
+        {
+            name: {
+                type: String,
+            },
+            value: {
+                type: [String],
+
+            }
+        }
+    ],
     software: {
         type: String,
         trim: true,

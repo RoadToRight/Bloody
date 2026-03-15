@@ -20,14 +20,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${UrbanistFont.className}`}>
-        <Providers>
-          <AnnouncementBar />
-          <Navbar />
-          {children}
-          <Footer />
-
-        </Providers>
-
+        {children}
       </body>
     </html>
   );

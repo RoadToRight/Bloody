@@ -6,12 +6,16 @@ const collectionSchema = new mongoose.Schema({
         trim: true,
         required: true,
     },
+    image: {
+        url: { type: String },
+        public_id: { type: String }
+    },
     handle: {
         type: String,
         trim: true,
         unique: true,
         required: true,
-        index:true
+        index: true
     }
 }, { timestamps: true })
 

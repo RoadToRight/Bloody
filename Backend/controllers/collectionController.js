@@ -1,29 +1,27 @@
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
-import ProductModel from "../models/productModel";
+import ErrorHandler from "../middlewares/errorMiddleware";
+import { createCollectionService, getCollectionService } from "../services/collection.service";
 
+export const createCollectionController = catchAsyncErrors(async (req, res, next) => {
+    const { name, handle } = req.body;
+    if (!handle || !name) {
+        next(new ErrorHandler("Please Fill Required Fields", 400))
+    }
+
+    const collection = await createCollectionService(req.body, next);
+    res.status(201).json({
+        success: true,
+        collection,
+        message: "Collection Created Successfully"
+    })
+})
 export const getCollectionProducts = catchAsyncErrors(async (req, res, next) => {
-    const { search, tags, properties, software, rating, price, color } = req.query;
-    const match = {};
-    if (software) {
-        match.software = software;
-    }
-    if (rating) {
-        match.rating = rating;
-    }
-    if (price) {
-        const priceArr = price.split(",");
-        match.price = { $gte: priceArr[0], $lte: priceArr[1] }
-    }
-    if (properties) {
-        const propertiesArr = properties.split(",")
-        match.properties = properties;
-    }
-    ProductModel.aggregate([
-        {
-            $match: {
-                price: { $gte: 0 },
-                status: ""
-            }
-        }
-    ])
+
+    await getCollectionService(req.params, next)
+})
+export const updateCollectionController = catchAsyncErrors(async (req, res, next) => {
+
+})
+export const deleteCollectionController = catchAsyncErrors(async (req, res, next) => {
+
 })
